@@ -1,0 +1,2 @@
+com/example/qrtest/BuildConfig.java
+ com.example.qrtest.BuildConfig
