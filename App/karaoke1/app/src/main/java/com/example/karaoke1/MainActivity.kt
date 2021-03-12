@@ -2,6 +2,7 @@ package com.example.karaoke1
 
 import android.os.AsyncTask
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.kakao.auth.ApiErrorCode
@@ -12,6 +13,7 @@ import com.kakao.usermgmt.UserManagement
 import com.kakao.usermgmt.callback.MeV2ResponseCallback
 import com.kakao.usermgmt.response.MeV2Response
 import com.kakao.util.exception.KakaoException
+import com.kakao.util.helper.Utility
 import org.json.JSONObject
 import java.io.*
 import java.net.HttpURLConnection
@@ -19,12 +21,14 @@ import java.net.URL
 
 class MainActivity : AppCompatActivity() {
 
-    private val sessionCallback: SessionCallback =SessionCallback()
+    private var sessionCallback: SessionCallback?=null
+    //private var sessionCallback: SessionCallback? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        sessionCallback=SessionCallback()
+        Log.d("start activity", "YES")
         Session.getCurrentSession().addCallback(sessionCallback)
     }
 
@@ -35,43 +39,52 @@ class MainActivity : AppCompatActivity() {
 
     private class SessionCallback : ISessionCallback{
         override fun onSessionOpened() {
-            UserManagement.getInstance().me(object : MeV2ResponseCallback() {
+            /*UserManagement.getInstance().me(object : MeV2ResponseCallback() {
                 override fun onSuccess(result: MeV2Response?) {
                     //val intent = Intent(MyApplication.applicationContext(), MainActivity::class.java)
+                    Toast.makeText(MyApplication.applicationContext(), "Login success", Toast.LENGTH_LONG).show()
                 }
 
                 override fun onFailure(errorResult: ErrorResult?) {
                     if (errorResult!!.errorCode == ApiErrorCode.CLIENT_ERROR_CODE) {
                         Toast.makeText(MyApplication.applicationContext(), "네트워크 연결이 불안정합니다. 다시 시도해 주세요.", Toast.LENGTH_LONG).show()
                     } else {
-                        Toast.makeText(
-                            MyApplication.applicationContext(),
-                            "로그인 도중 오류가 발생했습니다: " + errorResult.errorMessage,
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(MyApplication.applicationContext(), "로그인 도중 오류가 발생했습니다: " + errorResult.errorMessage, Toast.LENGTH_LONG).show()
                     }
                 }
 
                 override fun onSessionClosed(errorResult: ErrorResult?) {
-                    Toast.makeText(
-                        MyApplication.applicationContext(),
-                        "세션이 닫혔습니다. 다시 시도해 주세요: " + errorResult!!.errorMessage,
-                        Toast.LENGTH_LONG
-                    ).show()
+                    Toast.makeText(MyApplication.applicationContext(), "세션이 닫혔습니다. 다시 시도해 주세요: " + errorResult!!.errorMessage, Toast.LENGTH_LONG).show()
                 }
 
-            })
+            })*/
+            requestMe()
         }
+        private fun requestMe(){
+            UserManagement.getInstance()
+                    .me(object : MeV2ResponseCallback() {
+                        override fun onSessionClosed(errorResult: ErrorResult) {
+                            Toast.makeText(MyApplication.applicationContext(), "세션이 닫혔습니다. 다시 시도해 주세요: " + errorResult!!.errorMessage, Toast.LENGTH_LONG).show()
+                        }
 
+                        override fun onFailure(errorResult: ErrorResult) {
+                            if (errorResult!!.errorCode == ApiErrorCode.CLIENT_ERROR_CODE) {
+                                Toast.makeText(MyApplication.applicationContext(), "네트워크 연결이 불안정합니다. 다시 시도해 주세요.", Toast.LENGTH_LONG).show()
+                            } else {
+                                Toast.makeText(MyApplication.applicationContext(), "로그인 도중 오류가 발생했습니다: " + errorResult.errorMessage, Toast.LENGTH_LONG).show()
+                            }
+                        }
+
+                        override fun onSuccess(result: MeV2Response) {
+                            Toast.makeText(MyApplication.applicationContext(), "Login success", Toast.LENGTH_LONG).show()
+                        }
+                    })
+        }
         override fun onSessionOpenFailed(exception: KakaoException?) {
-            Toast.makeText(
-                MyApplication.applicationContext(),
-                "로그인 도중 오류가 발생했습니다. 인터넷 연결을 확인해주세요: " + exception.toString(),
-                Toast.LENGTH_SHORT
-            ).show();
+            Toast.makeText(MyApplication.applicationContext(), "로그인 도중 오류가 발생했습니다. 인터넷 연결을 확인해주세요: " + exception.toString(), Toast.LENGTH_SHORT).show();
         }
 
-        /*@Suppress("DEPRECATION")
+        @Suppress("DEPRECATION")
         public class JsonLogin: AsyncTask<String, String, String>() {
             override fun doInBackground(vararg strings: String?): String? {
                 val arr = arrayOfNulls<String>(strings.size)
@@ -133,6 +146,6 @@ class MainActivity : AppCompatActivity() {
             override fun onPostExecute(result: String?) {
                 super.onPostExecute(result)
             }
-        }*/
+        }
     }
 }
