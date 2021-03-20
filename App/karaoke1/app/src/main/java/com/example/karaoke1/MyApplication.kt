@@ -1,14 +1,12 @@
 package com.example.karaoke1
 
 import android.app.Application
+import android.bluetooth.BluetoothGatt
 import android.content.Context
 import com.kakao.auth.*
 
 
 class MyApplication : Application(){
-
-
-
     override fun onCreate() {
         super.onCreate()
         instance=this
@@ -54,6 +52,7 @@ class MyApplication : Application(){
 
     companion object{
         private var instance:MyApplication?=null
+        lateinit var mGatt: BluetoothGatt
         fun applicationContext():Context{
             return instance!!.applicationContext
         }

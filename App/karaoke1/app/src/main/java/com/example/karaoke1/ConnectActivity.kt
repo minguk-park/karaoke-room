@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.example.karaoke1.Constants.Companion.REQUEST_ENABLE_BT
+import com.example.karaoke1.MyApplication.Companion.mGatt
 import com.google.zxing.integration.android.IntentIntegrator
 import java.util.ArrayList
 import kotlinx.android.synthetic.main.activity_connect.*
@@ -28,7 +29,7 @@ class ConnectActivity : AppCompatActivity() {
     private var scanDevice: BluetoothDevice?=null
 
     private var ble_scanner: BluetoothLeScanner? = null
-    private var mGatt: BluetoothGatt? = null
+    //private var mGatt: BluetoothGatt? = null
     private var mConnected:Boolean=false
 
     lateinit var MAC_ADDR:String
@@ -170,7 +171,7 @@ class ConnectActivity : AppCompatActivity() {
     fun connectDevice(device: BluetoothDevice?){
         //txtState.setText("Connecting to $device?.address")
         Log.d(TAG,"Connecting to $device // $scanDevice")
-        mGatt=device?.connectGatt(applicationContext, false, gattClientcallback)
+        mGatt=device!!.connectGatt(applicationContext, false, gattClientcallback)
     }
 
     private fun requestEnableBLE() {

@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
 
                         override fun onSuccess(result: MeV2Response) {
                             Toast.makeText(MyApplication.applicationContext(), "Login success", Toast.LENGTH_LONG).show()
-                            val intent=Intent(MyApplication.applicationContext(),ConnectActivity::class.java)
+                            val intent=Intent(MyApplication.applicationContext(),HomeActivity::class.java)
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             startActivity(MyApplication.applicationContext(),intent,null)
                         }
