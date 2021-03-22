@@ -33,7 +33,8 @@ class MainActivity : FragmentActivity() {
 
 
     fun goBootpayRequest() {
-        val bootUser = BootUser().setPhone("010-1234-5678")
+        //val bootUser = BootUser().setPhone("010-1234-5678")
+        val bootUser=BootUser()
         val bootExtra = BootExtra().setQuotas(intArrayOf(0, 2, 3))
         Log.d("CHECK","boot Extra")
 
@@ -47,6 +48,7 @@ class MainActivity : FragmentActivity() {
                 .setUX(UX.PG_DIALOG)
                 .setPG(PG.INICIS)
                 .setMethod(Method.CARD)
+                //.setIsShowAgree(true)         // 정보 수집에 관련된 동의창 여부
 //                .setUserPhone("010-1234-5678") // 구매자 전화번호
                 .setName("맥북프로's 임다") // 결제할 상품명
                 .setOrderId("1234") // 결제 고유번호expire_month
