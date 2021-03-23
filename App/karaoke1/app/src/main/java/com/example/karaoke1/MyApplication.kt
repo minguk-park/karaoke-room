@@ -53,6 +53,7 @@ class MyApplication : Application(){
     companion object{
         private var instance:MyApplication?=null
         lateinit var mGatt: BluetoothGatt
+        lateinit var userEmail:String
         fun applicationContext():Context{
             return instance!!.applicationContext
         }
