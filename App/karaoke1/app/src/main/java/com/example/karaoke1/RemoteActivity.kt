@@ -19,7 +19,6 @@ class RemoteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_remote)
 
-
         btnTempoUp.setOnClickListener{
             Toast.makeText(this,"Tempo Up / 1",Toast.LENGTH_SHORT).show()
             //onClickWrite(mGatt,"1")
