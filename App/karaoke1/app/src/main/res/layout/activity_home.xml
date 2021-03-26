@@ -35,4 +35,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnRemote" />
+
+    <LinearLayout
+        android:layout_width="350dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnPayment"
+        tools:ignore="MissingConstraints">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:src="@drawable/ic_baseline_bluetooth_24" />
+
+        <android.widget.Button
+            android:id="@+id/btnconnect2"
+            android:layout_width="275dp"
+            android:layout_height="75dp"
+            android:layout_marginStart="-20dp"
+            android:background="@drawable/left_button_shape"
+            android:text="CONNECT" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

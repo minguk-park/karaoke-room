@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
                         override fun onSuccess(result: MeV2Response) {
                             Toast.makeText(MyApplication.applicationContext(), "Login success", Toast.LENGTH_LONG).show()
                             MyApplication.userEmail=result.kakaoAccount.toString()
-                            val intent=Intent(MyApplication.applicationContext(),HomeActivity::class.java)
+                            val intent=Intent(MyApplication.applicationContext(),MainPageActivity::class.java)
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             startActivity(MyApplication.applicationContext(),intent,null)
                         }
