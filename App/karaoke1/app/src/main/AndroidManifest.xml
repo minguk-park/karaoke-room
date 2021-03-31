@@ -18,7 +18,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Karaoke1"
         android:usesCleartextTraffic="true">
-        <activity android:name=".RemoteActivity"></activity>
+        <activity android:name=".MainPageActivity"></activity>
+        <activity android:name=".RemoteActivity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".MyBarcodeReaderActivity" />
         <activity android:name=".ConnectActivity" />
