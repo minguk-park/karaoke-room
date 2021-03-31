@@ -22,6 +22,7 @@ import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
 
+
 class MainActivity : AppCompatActivity() {
 
     private var sessionCallback: SessionCallback?=null
@@ -60,7 +61,9 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
 
+                        @Suppress("DEPRECATION")
                         override fun onSuccess(result: MeV2Response) {
+                            //JsonLogin().execute(result.nickname,result.kakaoAccount.email)            //서버에 정보 저장
                             Toast.makeText(MyApplication.applicationContext(), "Login success", Toast.LENGTH_LONG).show()
                             MyApplication.userEmail=result.kakaoAccount.toString()
                             val intent=Intent(MyApplication.applicationContext(),MainPageActivity::class.java)
