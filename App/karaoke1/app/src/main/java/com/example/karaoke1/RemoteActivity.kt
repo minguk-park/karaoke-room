@@ -1,7 +1,6 @@
 package com.example.karaoke1
 
 import android.content.DialogInterface
-import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
@@ -20,6 +19,7 @@ import org.json.JSONObject
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
+import android.content.Intent as Intent
 
 class RemoteActivity : AppCompatActivity() {
 
@@ -46,8 +46,8 @@ class RemoteActivity : AppCompatActivity() {
             }
         }
         btnsearch.setOnClickListener {
-            val builder = AlertDialog.Builder(this@RemoteActivity)
-            val dialogView = layoutInflater.inflate(R.layout.search_result_dialog, null)
+            //val builder = AlertDialog.Builder(this@RemoteActivity)
+            //val dialogView = layoutInflater.inflate(R.layout.search_result_dialog, null)
             try {
                 //var jsonresult = JsonSearch().execute(searchType, editSearch.text.toString()).get()
                 //Log.d("JsonResult","${jsonresult}")
@@ -59,6 +59,8 @@ class RemoteActivity : AppCompatActivity() {
                             }
                         }).create()
                 alertDialog.show()*/
+                var intent= Intent(this,PopupResultActivity::class.java)
+                startActivityForResult(intent,1)
             }catch(e:Exception){
                 e.printStackTrace()
             }
