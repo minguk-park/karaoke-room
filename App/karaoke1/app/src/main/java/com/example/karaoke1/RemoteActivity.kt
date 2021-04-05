@@ -13,6 +13,8 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.karaoke1.BluetoothUtils.Companion.onClickWrite
+import com.example.karaoke1.MyApplication.Companion.mGatt
 import kotlinx.android.synthetic.main.activity_remote.*
 import kotlinx.android.synthetic.main.activity_remote.view.*
 import org.json.JSONObject
@@ -68,28 +70,27 @@ class RemoteActivity : AppCompatActivity() {
 
         btnTempoUp.setOnClickListener{
             Toast.makeText(this, "Tempo Up / 1", Toast.LENGTH_SHORT).show()
-            //onClickWrite(mGatt,"1")
+            mGatt?.let { it1 -> onClickWrite(it1,"1") }
         }
         btnTempoDown.setOnClickListener{
             Toast.makeText(this, "Tempo Down / 2", Toast.LENGTH_SHORT).show()
-            //onClickWrite(mGatt,"2")
+            mGatt?.let { it1 -> onClickWrite(it1,"2") }
         }
         btnVolumeUp.setOnClickListener{
             Toast.makeText(this, "Volume Up / 3", Toast.LENGTH_SHORT).show()
-            //onClickWrite(mGatt,"3")
+            mGatt?.let { it1 -> onClickWrite(it1,"3") }
         }
         btnVolumeDown.setOnClickListener{
             Toast.makeText(this, "Volume Down / 4", Toast.LENGTH_SHORT).show()
-            //builder.setView(dialogView)
-            //onClickWrite(mGatt,"4")
+            mGatt?.let { it1 -> onClickWrite(it1,"4") }
         }
         btnPitchUp.setOnClickListener{
             Toast.makeText(this, "Pitch Up / 5", Toast.LENGTH_SHORT).show()
-            //onClickWrite(mGatt,"5")
+            mGatt?.let { it1 -> onClickWrite(it1,"5") }
         }
         btnPitchDown.setOnClickListener{
             Toast.makeText(this, "Pitch Down / 6", Toast.LENGTH_SHORT).show()
-            //onClickWrite(mGatt,"6")
+            mGatt?.let { it1 -> onClickWrite(it1,"6") }
         }
     }
 
@@ -137,7 +138,7 @@ class RemoteActivity : AppCompatActivity() {
                 ob.accumulate("type", arr[0])
                 ob.accumulate("text", arr[1])
                 try {
-                    val url = URL("http://175.118.28.138/kakao")        // url 수정
+                    val url = URL("http://175.118.28.138/music/search")        // url 수정
                     //URL url = new URL(urls[0]);
                     con = url.openConnection() as HttpURLConnection
                     con.requestMethod = "POST" //post 방식

@@ -3,12 +3,14 @@ package com.example.karaoke1
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_home.view.*
 import kotlinx.android.synthetic.main.payment_list_dialog.*
@@ -21,12 +23,19 @@ import kr.co.bootpay.enums.UX
 import kr.co.bootpay.model.BootUser
 
 class HomeActivity : Fragment() {
+    lateinit var MAC_ADDR:String
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?{
 
         val view: View = inflater.inflate(R.layout.activity_home, container, false)
 
         BootpayAnalytics.init(MyApplication.getGlobalApplicationContext(),"6048ae135b29480027521bb3")
 
+        view.btnconnect2.setOnClickListener {
+            val integrator= IntentIntegrator.forSupportFragment(this)
+            integrator.setBeepEnabled(true)
+            integrator.captureActivity=MyBarcodeReaderActivity::class.java
+            integrator.initiateScan()
+        }
         view.btnRemote.setOnClickListener {
             activity?.let {
                 val intent = Intent(context, RemoteActivity::class.java)
@@ -72,6 +81,25 @@ class HomeActivity : Fragment() {
             }
         }
         return view
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val result=IntentIntegrator.parseActivityResult(requestCode,resultCode,data)
+        if(result!=null){
+            if(result.contents!=null){
+                Toast.makeText(MyApplication.getGlobalApplicationContext(),"scanned :  ${result.contents} format: ${result.formatName}",Toast.LENGTH_LONG).show()
+                MAC_ADDR=result.contents.toString()
+                Log.d("QR","${MAC_ADDR}")
+                val intent=Intent(context,ConnectActivity::class.java)
+                intent.putExtra("MAC",MAC_ADDR)
+                startActivity(intent)
+            }else{
+                Toast.makeText(MyApplication.getGlobalApplicationContext(),"Cancelled",Toast.LENGTH_LONG).show()
+            }
+        }else {
+            super.onActivityResult(requestCode, resultCode, data)
+        }
+
     }
 
     private fun BootpayRequest(price:Int){

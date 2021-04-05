@@ -19,11 +19,13 @@ import com.google.zxing.integration.android.IntentIntegrator
 import java.util.ArrayList
 import kotlinx.android.synthetic.main.activity_connect.*
 
+@Suppress("DEPRECATION")
 class ConnectActivity : AppCompatActivity() {
     private val TAG: String = "Central"
 
     private var ble_adapter: BluetoothAdapter? = null
     private var is_scanning: Boolean = false
+    private var is_connected: Boolean = false
     private var connected: Boolean = false
     private var scan_results: HashMap<String, BluetoothDevice>? =HashMap()
     private var scanDevice: BluetoothDevice?=null
@@ -33,7 +35,7 @@ class ConnectActivity : AppCompatActivity() {
     private var mConnected:Boolean=false
 
     lateinit var MAC_ADDR:String
-    //MAC_ADDR :B8:27:EB:2F:08:1D
+    //val MAC_ADDR ="B8:27:EB:2F:08:1D"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +47,7 @@ class ConnectActivity : AppCompatActivity() {
             requestPermissions(Constants.PERMISSIONS, Constants.REQUEST_ALL_PERMISSION)
         }
 
-        var ble_manager: BluetoothManager
-        ble_manager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        var ble_manager: BluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         //set ble adapter
         ble_adapter = ble_manager.adapter
 
@@ -55,6 +56,13 @@ class ConnectActivity : AppCompatActivity() {
             integrator.setBeepEnabled(true)
             integrator.captureActivity=MyBarcodeReaderActivity::class.java
             integrator.initiateScan()
+            //startScan()
+        }
+        btndisconnect.setOnClickListener {
+            disconnectGattServer()
+            MAC_ADDR= null.toString()
+            scanDevice=null
+            Log.d("MAC_ADDR","${MAC_ADDR}")
         }
     }
 
@@ -80,6 +88,7 @@ class ConnectActivity : AppCompatActivity() {
 
         init {
             cb_scan_result = scan_results as HashMap<String, BluetoothDevice>
+            Log.d(TAG, "scan_cb")
         }
 
         override fun onScanFailed(errorCode: Int) {
@@ -133,7 +142,7 @@ class ConnectActivity : AppCompatActivity() {
         if (ble_adapter == null || !ble_adapter!!.isEnabled) {
             requestEnableBLE()
             //txtState.text = "Scanning Failed: ble not enabled"
-            //Log.d(TAG,"Scanning Failed: ble not enabled")
+            Log.d(TAG,"Scanning Failed: ble not enabled")
             return;
         }
         val filters: MutableList<ScanFilter> = ArrayList()
@@ -155,23 +164,30 @@ class ConnectActivity : AppCompatActivity() {
             //txtState.setText("add Scanned Device : ${scanDevice}")
             Log.d("TAG", "Stop Scanning")
             stopScan()
-        }, 10000L)
+        }, 7000L)
     }
 
     private fun stopScan(){
+        Log.d("Stop Scan","stopScan")
         ble_adapter?.bluetoothLeScanner?.stopScan(scan_cb)
         is_scanning=false
         scan_results= HashMap()
-        /*if(scanDevice!=null)
+        //txt.text="${scanDevice}"
+        if(scanDevice!=null) {
             connectDevice(scanDevice)
-        else
-            Log.e(TAG,"Scan Failed. Retry, please")*/
+            Log.d("mGatt", "${mGatt}")
+        }
+        else {
+            Log.e(TAG, "Scan Failed. Retry, please")
+            startScan()
+        }
     }
+
 
     fun connectDevice(device: BluetoothDevice?){
         //txtState.setText("Connecting to $device?.address")
         Log.d(TAG,"Connecting to $device // $scanDevice")
-        mGatt=device!!.connectGatt(applicationContext, false, gattClientcallback)
+        mGatt=device!!.connectGatt(applicationContext, false, gattClientcallback,BluetoothDevice.TRANSPORT_LE)
     }
 
     private fun requestEnableBLE() {
@@ -183,10 +199,12 @@ class ConnectActivity : AppCompatActivity() {
         override fun onConnectionStateChange(gatt: BluetoothGatt?, status: Int, newState: Int) {
             super.onConnectionStateChange(gatt, status, newState)
             if(status==BluetoothGatt.GATT_FAILURE){
+                Log.d(TAG, "bluetoothGatt.GATT_FAILURE, ${is_connected.toString()}")
                 disconnectGattServer()
                 return
             }else if(status!=BluetoothGatt.GATT_SUCCESS){
-                disconnectGattServer()
+                Log.d(TAG, "bluetoothGatt.GATT_FAILURE / ${status}")
+                //disconnectGattServer()
                 return
             }
             if(newState== BluetoothProfile.STATE_CONNECTED){
@@ -194,6 +212,7 @@ class ConnectActivity : AppCompatActivity() {
                 Log.d(TAG, "Connected to the GATT server")
                 gatt!!.discoverServices()
             }else if(newState== BluetoothProfile.STATE_DISCONNECTED){
+                Log.d(TAG, "BluetoothProfile.STATE_DISCONNECTED")
                 disconnectGattServer()
             }
         }
@@ -228,6 +247,7 @@ class ConnectActivity : AppCompatActivity() {
                     }
                 }
                 Log.d(TAG, "Services get ${mGatt}")
+                is_connected=true
             }
         }
 
@@ -269,6 +289,7 @@ class ConnectActivity : AppCompatActivity() {
         if(mGatt!=null){
             mGatt!!.disconnect()
             mGatt!!.close()
+            Log.d("mGatt","${mGatt}")
         }
     }
     fun setConnected(connected: Boolean){

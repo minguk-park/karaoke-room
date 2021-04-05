@@ -122,7 +122,7 @@ class BluetoothUtils {
             }
             //"text" 보내기
             val cmdBytes = ByteArray(256)
-            val text="test"
+            val text=commend.toString()
             Log.d("Central","$cmdBytes // cmdBytes")
             cmdCharacteristic.value=text.toByteArray()
             //Log.d(TAG,"$cmdBytes")

@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
 
         val btnScan: Button = findViewById<Button>(R.id.btnScan)
         //val btnchk : Button= findViewById<Button>(R.id.btnchk)
-        btnScan.setOnClickListener { v -> startScan(v) }
+        btnScan.setOnClickListener { startScan() }
 
         btnconnect.setOnClickListener {
             ////Toast.makeText(applicationContext,"device : ${scanDevice?.get(0)}",Toast.LENGTH_LONG)
@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun startScan(view: View) {
+    private fun startScan() {
         val txtState = findViewById<TextView>(R.id.txtState)
         txtState.text = "Scanning..."
         if (ble_adapter == null || !ble_adapter!!.isEnabled) {
@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity() {
             txtState.setText("add Scanned Device : ${scanDevice}")
             Log.d("TAG", "Stop Scanning")
             stopScan()
-        }, 10000L)
+        }, 7000L)
     }
 
     val scan_cb = object : ScanCallback() {
@@ -207,12 +207,22 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun stopScan(){
         ble_adapter?.bluetoothLeScanner?.stopScan(scan_cb)
         is_scanning=false
         //btnScan.text="Start Scan"
         //connectDevice(ScanResults!![0])
         scan_results= HashMap()
+        if(scanDevice!=null) {
+            connectDevice(scanDevice)
+            Log.d("mGatt", "${mGatt}")
+        }
+        else {
+            Log.e(TAG, "Scan Failed. Retry, please")
+            startScan()
+        }
     }
 
     private val gattClientcallback:BluetoothGattCallback=object:BluetoothGattCallback(){
@@ -322,10 +332,11 @@ class MainActivity : AppCompatActivity() {
         mConnected=connected
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     fun connectDevice(device: BluetoothDevice?){
-        //txtState.setText("Connecting to $device?.address")
+        txtState.setText("Connecting to $device?.address")
         Log.d(TAG,"Connecting to $device // $scanDevice")
-        mGatt=device?.connectGatt(applicationContext, false, gattClientcallback)
+        mGatt=device?.connectGatt(applicationContext, false, gattClientcallback,BluetoothDevice.TRANSPORT_LE)
     }
 
     fun disconnectGattServer(){
@@ -336,6 +347,7 @@ class MainActivity : AppCompatActivity() {
             mGatt!!.close()
         }
     }
+
     fun onClickWrite(view: View){
         //Log.d(TAG,"OnClickWrite to $mGatt")
         val cmdCharacteristic= findCommandCharacteristic((mGatt!!))
