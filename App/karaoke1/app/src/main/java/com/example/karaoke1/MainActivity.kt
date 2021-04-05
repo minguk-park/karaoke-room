@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
                     ob.accumulate("name", arr[0])
                     ob.accumulate("email", arr[1])
                     try {
-                        val url = URL("http://175.118.28.138/kakao")
+                        val url = URL("http://175.118.28.138/auth/register")
                         //URL url = new URL(urls[0]);
                         con = url.openConnection() as HttpURLConnection
                         con.requestMethod = "POST" //post 방식

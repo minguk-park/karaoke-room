@@ -1,7 +1,6 @@
 package com.example.karaoke1
 
 import android.content.DialogInterface
-import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
@@ -14,12 +13,15 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.karaoke1.BluetoothUtils.Companion.onClickWrite
+import com.example.karaoke1.MyApplication.Companion.mGatt
 import kotlinx.android.synthetic.main.activity_remote.*
 import kotlinx.android.synthetic.main.activity_remote.view.*
 import org.json.JSONObject
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
+import android.content.Intent as Intent
 
 class RemoteActivity : AppCompatActivity() {
 
@@ -46,8 +48,8 @@ class RemoteActivity : AppCompatActivity() {
             }
         }
         btnsearch.setOnClickListener {
-            val builder = AlertDialog.Builder(this@RemoteActivity)
-            val dialogView = layoutInflater.inflate(R.layout.search_result_dialog, null)
+            //val builder = AlertDialog.Builder(this@RemoteActivity)
+            //val dialogView = layoutInflater.inflate(R.layout.search_result_dialog, null)
             try {
                 //var jsonresult = JsonSearch().execute(searchType, editSearch.text.toString()).get()
                 //Log.d("JsonResult","${jsonresult}")
@@ -59,6 +61,8 @@ class RemoteActivity : AppCompatActivity() {
                             }
                         }).create()
                 alertDialog.show()*/
+                var intent= Intent(this,PopupResultActivity::class.java)
+                startActivityForResult(intent,1)
             }catch(e:Exception){
                 e.printStackTrace()
             }
@@ -66,28 +70,27 @@ class RemoteActivity : AppCompatActivity() {
 
         btnTempoUp.setOnClickListener{
             Toast.makeText(this, "Tempo Up / 1", Toast.LENGTH_SHORT).show()
-            //onClickWrite(mGatt,"1")
+            mGatt?.let { it1 -> onClickWrite(it1,"1") }
         }
         btnTempoDown.setOnClickListener{
             Toast.makeText(this, "Tempo Down / 2", Toast.LENGTH_SHORT).show()
-            //onClickWrite(mGatt,"2")
+            mGatt?.let { it1 -> onClickWrite(it1,"2") }
         }
         btnVolumeUp.setOnClickListener{
             Toast.makeText(this, "Volume Up / 3", Toast.LENGTH_SHORT).show()
-            //onClickWrite(mGatt,"3")
+            mGatt?.let { it1 -> onClickWrite(it1,"3") }
         }
         btnVolumeDown.setOnClickListener{
             Toast.makeText(this, "Volume Down / 4", Toast.LENGTH_SHORT).show()
-            //builder.setView(dialogView)
-            //onClickWrite(mGatt,"4")
+            mGatt?.let { it1 -> onClickWrite(it1,"4") }
         }
         btnPitchUp.setOnClickListener{
             Toast.makeText(this, "Pitch Up / 5", Toast.LENGTH_SHORT).show()
-            //onClickWrite(mGatt,"5")
+            mGatt?.let { it1 -> onClickWrite(it1,"5") }
         }
         btnPitchDown.setOnClickListener{
             Toast.makeText(this, "Pitch Down / 6", Toast.LENGTH_SHORT).show()
-            //onClickWrite(mGatt,"6")
+            mGatt?.let { it1 -> onClickWrite(it1,"6") }
         }
     }
 
@@ -135,7 +138,7 @@ class RemoteActivity : AppCompatActivity() {
                 ob.accumulate("type", arr[0])
                 ob.accumulate("text", arr[1])
                 try {
-                    val url = URL("http://175.118.28.138/kakao")        // url 수정
+                    val url = URL("http://175.118.28.138/music/search")        // url 수정
                     //URL url = new URL(urls[0]);
                     con = url.openConnection() as HttpURLConnection
                     con.requestMethod = "POST" //post 방식
