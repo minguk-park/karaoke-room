@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
                             //JsonLogin().execute(result.nickname,result.kakaoAccount.email)            //서버에 정보 저장
                             Toast.makeText(MyApplication.applicationContext(), "Login success", Toast.LENGTH_LONG).show()
                             MyApplication.userEmail=result.kakaoAccount.toString()
-                            val intent=Intent(MyApplication.applicationContext(),MainPageActivity::class.java)
+                            val intent=Intent(MyApplication.applicationContext(),HomeActivity::class.java)
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             startActivity(MyApplication.applicationContext(),intent,null)
                         }
