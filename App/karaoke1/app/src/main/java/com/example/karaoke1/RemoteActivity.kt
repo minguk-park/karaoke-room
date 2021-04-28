@@ -4,19 +4,28 @@ import android.content.DialogInterface
 import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.example.karaoke1.BluetoothUtils.Companion.onClickWrite
 import com.example.karaoke1.MyApplication.Companion.mGatt
+import com.example.karaoke1.item.ItemSong
 import kotlinx.android.synthetic.main.activity_remote.*
 import kotlinx.android.synthetic.main.activity_remote.view.*
+import kotlinx.android.synthetic.main.payment_list_dialog.view.*
+import kr.co.bootpay.Bootpay
+import kr.co.bootpay.BootpayAnalytics
+import kr.co.bootpay.enums.Method
+import kr.co.bootpay.enums.PG
+import kr.co.bootpay.enums.UX
+import kr.co.bootpay.model.BootExtra
+import kr.co.bootpay.model.BootUser
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.*
 import java.net.HttpURLConnection
@@ -48,20 +57,22 @@ class RemoteActivity : AppCompatActivity() {
             }
         }
         btnsearch.setOnClickListener {
-            //val builder = AlertDialog.Builder(this@RemoteActivity)
-            //val dialogView = layoutInflater.inflate(R.layout.search_result_dialog, null)
+            val builder = AlertDialog.Builder(this@RemoteActivity)
+            val dialogView = layoutInflater.inflate(R.layout.search_result_dialog, null)
             try {
-                //var jsonresult = JsonSearch().execute(searchType, editSearch.text.toString()).get()
-                //Log.d("JsonResult","${jsonresult}")
-                /*val alertDialog:AlertDialog=builder.setView(dialogView)
-                        .setItems(listItem,object: DialogInterface.OnClickListener {
-                            override fun onClick(p0: DialogInterface?, p1: Int) {
-                               Toast.makeText(applicationContext,"${listItem[p1]}",Toast.LENGTH_LONG)
-                                Log.d("dialog","${listItem[p1]}")
-                            }
-                        }).create()
-                alertDialog.show()*/
+                /*var jsonresult = JsonExecute().execute("search","http://175.118.28.138/music/search", searchType, editSearch.text.toString()).get()
+                Log.d("JsonResult","${jsonresult}")
+                var jsonArray:JSONArray=JSONArray(jsonresult)
+                var resultSongs= arrayListOf<ItemSong>()
+                for(i in 0 until jsonArray.length()){
+                    var jsonObject:JSONObject=jsonArray.getJSONObject(i)
+                    var resultsong=ItemSong(jsonObject.getString("id"),jsonObject.getString("name"),0)
+                    resultSongs.add(resultsong)
+                    Log.d("JsonResult","${resultsong.title} / ${resultsong.singer}")
+                }*/
                 var intent= Intent(this,PopupResultActivity::class.java)
+                //intent.putExtra("ListSong",resultSongs)
+                //intent.putExtra("resultSong",jsonresult)
                 startActivityForResult(intent,1)
             }catch(e:Exception){
                 e.printStackTrace()
@@ -95,95 +106,105 @@ class RemoteActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.search_menu, menu)
-        val mSearch : MenuItem= menu!!.findItem(R.id.search);
-
-        //Log.d("TAG","${mSearch}")
-        val sv:SearchView= mSearch.actionView as SearchView
-        sv.isSubmitButtonEnabled
-
-        sv.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                val builder = AlertDialog.Builder(this@RemoteActivity)
-                val dialogView = layoutInflater.inflate(R.layout.search_result_dialog, null)
-                builder.setView(dialogView).show()
-                /*var result=ArrayList<String>()
-                onClickWrite(mGatt,"search/${query}.toString()")
-                */
-                Toast.makeText(MyApplication.applicationContext(), "yes", Toast.LENGTH_SHORT).show()
-                return true
-            }
-
-            override fun onQueryTextChange(p0: String?): Boolean {
-                return true
-            }
-
-        })
-
+        val menuInflater = menuInflater
+        menuInflater.inflate(R.menu.top_menu, menu)
         return true
     }
 
-    @Suppress("DEPRECATION")
-    public class JsonSearch: AsyncTask<String, String, String>() {
-        override fun doInBackground(vararg strings: String?): String? {
-            val arr = arrayOfNulls<String>(strings.size)
-            for (i in strings.indices) {
-                arr[i] = strings[i]
-            }
-            val ob = JSONObject()
-            var con: HttpURLConnection? = null
-            var reader: BufferedReader? = null
-            try {
-                ob.accumulate("type", arr[0])
-                ob.accumulate("text", arr[1])
-                try {
-                    val url = URL("http://175.118.28.138/music/search")        // url 수정
-                    //URL url = new URL(urls[0]);
-                    con = url.openConnection() as HttpURLConnection
-                    con.requestMethod = "POST" //post 방식
-                    con.setRequestProperty("Cache-Control", "no-cache") //캐시 설정
-                    con.setRequestProperty("Content-Type", "application/json") // json형태로 전송
-                    con.setRequestProperty("Accept", "text/html") //서버에 response 데이터를 html로 받음
-                    con.doOutput = true //OutStream으로 post데이터를 넘겨주겠다는 의미
-                    con.doInput = true //InputStream으로 서버의 응답을 받겠다는 의미
-                    con.connect()
-
-                    val outStream = con.outputStream //스트림 생성
-                    val writer = BufferedWriter(OutputStreamWriter(outStream))
-                    writer.write(ob.toString())
-                    writer.flush()
-                    writer.close()
-
-                    val stream = con.inputStream
-                    reader = BufferedReader(InputStreamReader(stream))
-
-                    val buffer = StringBuffer()
-                    var line: String? = ""
-                    while (reader.readLine().also { line = it } != null) {
-                        buffer.append(line)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_payment -> {
+                var price: Int = 0
+                var count: Int = 0
+                val builder = AlertDialog.Builder(this)
+                val dialogView = layoutInflater.inflate(R.layout.payment_list_dialog, null)
+                builder!!.setView(dialogView)!!.show()
+                dialogView.paymentRg.setOnCheckedChangeListener { radioGroup, checked ->
+                    when (checked) {
+                        R.id.rb2 -> {
+                            price = 500
+                            count = 2
+                            dialogView.btnbootpay.text = "${price}원 결제"
+                        }
+                        R.id.rb4 -> {
+                            price = 1000
+                            count = 4
+                            dialogView.btnbootpay.text = "${price}원 결제"
+                        }
+                        R.id.rb10 -> {
+                            price = 2000
+                            count = 10
+                            dialogView.btnbootpay.text = "${price}원 결제"
+                        }
+                        R.id.rb20 -> {
+                            price = 2500
+                            count = 20
+                            dialogView.btnbootpay.text = "${price}원 결제"
+                        }
                     }
-                    return buffer.toString()
-                } catch (e: IOException) {
-                    e.printStackTrace()
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            } finally {
-                //종료가 되면 disconnect메소드를 호출한다.
-                con?.disconnect()
-                try {
-                    //버퍼를 닫아준다.
-                    reader?.close()
-                } catch (e: IOException) {
-                    e.printStackTrace()
+                dialogView.btnbootpay.setOnClickListener {
+                    if (price != 0) {
+                        Log.d("Price", "${price}")
+                        BootpayAnalytics.init(this, "6048ae135b29480027521bb3")
+                        BootpayRequest(price, count)
+                    } else
+                        Toast.makeText(
+                                MyApplication.getGlobalApplicationContext(),
+                                "곡 수를 선택해주세요.",
+                                Toast.LENGTH_SHORT
+                        )
                 }
+                return true
             }
-            return null
-        }
-
-        override fun onPostExecute(result: String?) {
-            super.onPostExecute(result)
+            R.id.action_mypage->{
+                val intent = Intent(this, MypageActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+            else->{
+                return super.onOptionsItemSelected(item)
+            }
         }
     }
+
+    @Suppress("DEPRECATION")
+    fun BootpayRequest(price:Int,count:Int){
+        val bootUser= BootUser()
+        val bootExtra = BootExtra().setQuotas(intArrayOf(0, 2, 3))
+        Bootpay.init(this)
+                .setApplicationId("6048ae135b29480027521bb3")
+                .setContext(this)
+                .setBootUser(bootUser)
+                .setBootExtra(bootExtra)
+                .setUX(UX.PG_DIALOG)
+                .setMethod(Method.CARD)
+                .setPG(PG.INICIS)
+                .setName("곡 예약")
+                .setOrderId("${MyApplication.userEmail}")
+                .setPrice(price)
+                .onConfirm{ message->
+                    Bootpay.confirm(message)
+                    Log.d("Bootpay", message)
+                    //서버로 관련 데이터를 전송할 라이프사이클
+                   // JsonSearch().execute("http://175.118.28.138/payment/increase",MyApplication.userEmail,count.toString())
+                }
+                .onDone{message->
+                    Log.d("Bootpay", "onDone")
+                    Toast.makeText(MyApplication.getGlobalApplicationContext(),"결제가 정상적으로 완료되었습니다.",Toast.LENGTH_LONG)
+                    JsonExecute().execute("payment","http://175.118.28.138/payment/increase",MyApplication.userEmail,count.toString())
+                }
+                .onReady { message-> Log.d("Bootpay", "onReady")}
+                .onCancel{ message->
+                    Log.d("Bootpay", "onCancel")
+                    Toast.makeText(MyApplication.getGlobalApplicationContext(),"결제가 취소되었습니다.",Toast.LENGTH_LONG)
+                }
+                .onError{ message->
+                    Log.d("Bootpay", "onError")
+                    Toast.makeText(MyApplication.getGlobalApplicationContext(),"결제 Error",Toast.LENGTH_LONG)
+                }
+                .onClose{message->Log.d("close", "close")}
+                .request()
+    }
+
 }

@@ -16,7 +16,7 @@ import kr.co.bootpay.enums.UX
 import kr.co.bootpay.model.BootExtra
 import kr.co.bootpay.model.BootUser
 
-class MainActivity : FragmentActivity() {
+class MainActivity : AppCompatActivity() {
 
     val application_id = "6048ae135b29480027521bb3"
 

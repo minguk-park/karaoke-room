@@ -63,9 +63,9 @@ class MainActivity : AppCompatActivity() {
 
                         @Suppress("DEPRECATION")
                         override fun onSuccess(result: MeV2Response) {
-                            //JsonLogin().execute(result.nickname,result.kakaoAccount.email)            //서버에 정보 저장
+                            //JsonExecute().execute("signin","http://175.118.28.138/auth/register",result.nickname,result.kakaoAccount.email)            //서버에 정보 저장
                             Toast.makeText(MyApplication.applicationContext(), "Login success", Toast.LENGTH_LONG).show()
-                            MyApplication.userEmail=result.kakaoAccount.toString()
+                            MyApplication.userEmail=result.kakaoAccount.email
                             val intent=Intent(MyApplication.applicationContext(),HomeActivity::class.java)
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             startActivity(MyApplication.applicationContext(),intent,null)
@@ -101,6 +101,7 @@ class MainActivity : AppCompatActivity() {
                         con.doInput = true //InputStream으로 서버의 응답을 받겠다는 의미
                         con.connect()
 
+
                         val outStream = con.outputStream //스트림 생성
                         val writer = BufferedWriter(OutputStreamWriter(outStream))
                         writer.write(ob.toString())
@@ -124,6 +125,7 @@ class MainActivity : AppCompatActivity() {
                 } finally {
                     //종료가 되면 disconnect메소드를 호출한다.
                     con?.disconnect()
+                    Log.d("con","${con} ")
                     try {
                         //버퍼를 닫아준다.
                         reader?.close()
