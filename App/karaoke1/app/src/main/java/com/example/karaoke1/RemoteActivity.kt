@@ -30,11 +30,11 @@ import org.json.JSONObject
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
+import kotlin.reflect.typeOf
 import android.content.Intent as Intent
 
 class RemoteActivity : AppCompatActivity() {
 
-    //val spinItem=resources.getStringArray(R.array.optionspin)
     val spinItem= arrayOf("제목","가수")
     val listItem=arrayOf("가시","celebrity")
     lateinit var searchType:String
@@ -50,6 +50,7 @@ class RemoteActivity : AppCompatActivity() {
         spinner.onItemSelectedListener=object: AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 searchType=spinItem[position]
+                //mGatt?.let { it1 -> onClickWrite(it1,"10") }
                 Log.d("searchType","${searchType}")
             }
 
@@ -60,48 +61,110 @@ class RemoteActivity : AppCompatActivity() {
             val builder = AlertDialog.Builder(this@RemoteActivity)
             val dialogView = layoutInflater.inflate(R.layout.search_result_dialog, null)
             try {
-                /*var jsonresult = JsonExecute().execute("search","http://175.118.28.138/music/search", searchType, editSearch.text.toString()).get()
+                //var jsonresult = JsonExecute().execute("search","http://175.118.28.138/music/search", searchType, editSearch.text.toString()).get()
+                var jsonresult = JsonExecute().execute("search","http://192.168.122.228/music/search", searchType, editSearch.text.toString()).get()
                 Log.d("JsonResult","${jsonresult}")
                 var jsonArray:JSONArray=JSONArray(jsonresult)
                 var resultSongs= arrayListOf<ItemSong>()
+                Log.d("JsonArray","${jsonArray}")
+
                 for(i in 0 until jsonArray.length()){
-                    var jsonObject:JSONObject=jsonArray.getJSONObject(i)
-                    var resultsong=ItemSong(jsonObject.getString("id"),jsonObject.getString("name"),0)
-                    resultSongs.add(resultsong)
-                    Log.d("JsonResult","${resultsong.title} / ${resultsong.singer}")
-                }*/
+                    var jsonList: JSONArray? =jsonArray.getJSONArray(i)
+                    //jsonObject?.let { it1 -> jsonArrayList.add(it1) }
+                    for(j in 0 until jsonList!!.length()){
+                        var jsonObject:JSONObject=jsonList.getJSONObject(j)
+                        Log.d("jsonObject","${jsonObject}")
+                        var resultsong:ItemSong=ItemSong(jsonObject.getString("name"),jsonObject.getString("singer"),jsonObject.getInt("id"))
+                        resultSongs.add(resultsong)
+                        Log.d("resultsong","${resultsong}")
+                    }
+                }
                 var intent= Intent(this,PopupResultActivity::class.java)
-                //intent.putExtra("ListSong",resultSongs)
-                //intent.putExtra("resultSong",jsonresult)
+                intent.putExtra("resultSong",resultSongs)
+                Log.d("resultSong","${resultSongs.toString()} ")
+                //mGatt?.let { it1 -> onClickWrite(it1,"17,") }
                 startActivityForResult(intent,1)
             }catch(e:Exception){
                 e.printStackTrace()
             }
         }
 
+        /* 상단 3개*/
+        btnMenu.setOnClickListener{
+            Toast.makeText(this, "11 / 메뉴화면", Toast.LENGTH_SHORT).show()
+            mGatt?.let { it1 -> onClickWrite(it1,"11") }
+        }
+        btnChkResv.setOnClickListener {
+            Toast.makeText(this, "20 / 예약목록", Toast.LENGTH_SHORT).show()
+            mGatt?.let { it1 -> onClickWrite(it1,"20") }
+        }
+
+        btnCancelResv.setOnClickListener {
+            Toast.makeText(this, "24 / 예약취소", Toast.LENGTH_SHORT).show()
+            mGatt?.let { it1 -> onClickWrite(it1,"24") }
+        }
+
+        /*템포, 볼륨, 피치*/
         btnTempoUp.setOnClickListener{
-            Toast.makeText(this, "Tempo Up / 1", Toast.LENGTH_SHORT).show()
-            mGatt?.let { it1 -> onClickWrite(it1,"1") }
+            Toast.makeText(this, "Tempo Up / 23,1", Toast.LENGTH_SHORT).show()
+            mGatt?.let { it1 -> onClickWrite(it1,"23,1") }
         }
         btnTempoDown.setOnClickListener{
-            Toast.makeText(this, "Tempo Down / 2", Toast.LENGTH_SHORT).show()
-            mGatt?.let { it1 -> onClickWrite(it1,"2") }
+            Toast.makeText(this, "Tempo Down / 23,0", Toast.LENGTH_SHORT).show()
+            mGatt?.let { it1 -> onClickWrite(it1,"23,0") }
         }
         btnVolumeUp.setOnClickListener{
-            Toast.makeText(this, "Volume Up / 3", Toast.LENGTH_SHORT).show()
-            mGatt?.let { it1 -> onClickWrite(it1,"3") }
+            Toast.makeText(this, "Volume Up / 21,1", Toast.LENGTH_SHORT).show()
+            mGatt?.let { it1 -> onClickWrite(it1,"21,1") }
         }
         btnVolumeDown.setOnClickListener{
-            Toast.makeText(this, "Volume Down / 4", Toast.LENGTH_SHORT).show()
-            mGatt?.let { it1 -> onClickWrite(it1,"4") }
+            Toast.makeText(this, "Volume Down / 21,0", Toast.LENGTH_SHORT).show()
+            mGatt?.let { it1 -> onClickWrite(it1,"21,0") }
         }
         btnPitchUp.setOnClickListener{
-            Toast.makeText(this, "Pitch Up / 5", Toast.LENGTH_SHORT).show()
-            mGatt?.let { it1 -> onClickWrite(it1,"5") }
+            Toast.makeText(this, "Pitch Up / 22,1", Toast.LENGTH_SHORT).show()
+            mGatt?.let { it1 -> onClickWrite(it1,"22,1") }
         }
         btnPitchDown.setOnClickListener{
-            Toast.makeText(this, "Pitch Down / 6", Toast.LENGTH_SHORT).show()
-            mGatt?.let { it1 -> onClickWrite(it1,"6") }
+            Toast.makeText(this, "Pitch Down / 22,0", Toast.LENGTH_SHORT).show()
+            mGatt?.let { it1 -> onClickWrite(it1,"22,0") }
+        }
+
+        /*중앙 3개*/
+        btnCancel.setOnClickListener {
+            Toast.makeText(this, "12 / 취소", Toast.LENGTH_SHORT).show()
+            mGatt?.let { it1 -> onClickWrite(it1,"12") }
+        }
+        btnResvPrior.setOnClickListener {
+            Toast.makeText(this, "25 / 우선예약", Toast.LENGTH_SHORT).show()
+            mGatt?.let { it1 -> onClickWrite(it1,"25") }
+        }
+        btnReserve.setOnClickListener {
+            Toast.makeText(this, "18 / 예약하기", Toast.LENGTH_SHORT).show()
+            mGatt?.let { it1 -> onClickWrite(it1,"18") }
+        }
+
+        /* 방향키 및 재생*/
+        btnPlay.setOnClickListener {
+            Toast.makeText(this, "19 / 시작", Toast.LENGTH_SHORT).show()
+            mGatt?.let { it1 -> onClickWrite(it1,"19") }
+        }
+
+        btnUp.setOnClickListener{
+            Toast.makeText(this, "Up / 14", Toast.LENGTH_SHORT).show()
+            mGatt?.let { it1 -> onClickWrite(it1,"14") }
+        }
+        btnDown.setOnClickListener{
+            Toast.makeText(this, "Down / 13", Toast.LENGTH_SHORT).show()
+            mGatt?.let { it1 -> onClickWrite(it1,"13") }
+        }
+        btnLeft.setOnClickListener{
+            Toast.makeText(this, "Left / 16", Toast.LENGTH_SHORT).show()
+            mGatt?.let { it1 -> onClickWrite(it1,"16") }
+        }
+        btnRight.setOnClickListener{
+            Toast.makeText(this, "Right / 15", Toast.LENGTH_SHORT).show()
+            mGatt?.let { it1 -> onClickWrite(it1,"15") }
         }
     }
 
@@ -192,7 +255,8 @@ class RemoteActivity : AppCompatActivity() {
                 .onDone{message->
                     Log.d("Bootpay", "onDone")
                     Toast.makeText(MyApplication.getGlobalApplicationContext(),"결제가 정상적으로 완료되었습니다.",Toast.LENGTH_LONG)
-                    JsonExecute().execute("payment","http://175.118.28.138/payment/increase",MyApplication.userEmail,count.toString())
+                    //JsonExecute().execute("payment","http://175.118.28.138/payment/increase",MyApplication.userEmail,count.toString())
+                    JsonExecute().execute("payment","http://192.168.122.228/payment/increase",MyApplication.userEmail,count.toString())
                 }
                 .onReady { message-> Log.d("Bootpay", "onReady")}
                 .onCancel{ message->

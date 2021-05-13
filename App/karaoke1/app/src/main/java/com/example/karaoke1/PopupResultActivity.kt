@@ -32,12 +32,13 @@ class PopupResultActivity : AppCompatActivity() {
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_popup_result)
 
-        songList=intent.getSerializableExtra("ListSong") as ArrayList<ItemSong>
+        songList=intent.getSerializableExtra("resultSong") as ArrayList<ItemSong>
 
         val adapter=RvSongAdapter(this,songList){songinfo->
-            //mGatt?.let { it1 -> onClickWrite(it1, "r/${songinfo.title},${songinfo.singer}") }
+            mGatt?.let { it1 -> onClickWrite(it1, "17,${songinfo.title}") }
             //JsonCount().execute("http://175.118.28.138/payment/d",MyApplication.userEmail)
             //JsonExecute().execute("countdown","http://175.118.28.138/payment/d",MyApplication.userEmail)
+            JsonExecute().execute("countdown","http://192.168.122.228/payment/d",MyApplication.userEmail)
             finish()
         }
         resultRv.adapter=adapter

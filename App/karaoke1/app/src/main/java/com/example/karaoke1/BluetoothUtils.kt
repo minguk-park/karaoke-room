@@ -4,6 +4,9 @@ import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCharacteristic
 import android.bluetooth.BluetoothGattService
 import android.util.Log
+import com.example.karaoke1.Constants.Companion.CHARACTERISTIC_COMMAND_STRING
+import com.example.karaoke1.Constants.Companion.CHARACTERISTIC_RESPONSE_STRING
+import com.example.karaoke1.Constants.Companion.CLIENT_CHARACTERISTIC_CONFIG
 import java.util.*
 
 class BluetoothUtils {
@@ -92,9 +95,9 @@ class BluetoothUtils {
             //Log.d(TAG,"$characteristicUuidString // $CHARACTERISTIC_COMMAND_STRING // $CHARACTERISTIC_RESPONSE_STRING // $CLIENT_CHARACTERISTIC_CONFIG")
             return matchUUIDs(
                 characteristicUuidString,
-                Constants.CHARACTERISTIC_COMMAND_STRING,
-                Constants.CHARACTERISTIC_RESPONSE_STRING,
-                Constants.CLIENT_CHARACTERISTIC_CONFIG
+                CHARACTERISTIC_COMMAND_STRING,
+                CHARACTERISTIC_RESPONSE_STRING,
+                CLIENT_CHARACTERISTIC_CONFIG
             )
         }
 
@@ -121,12 +124,13 @@ class BluetoothUtils {
                 return
             }
             //"text" 보내기
-            val cmdBytes = ByteArray(256)
+            var cmdBytes = ByteArray(256)
             val text=commend.toString()
-            Log.d("Central","$cmdBytes // cmdBytes")
-            cmdCharacteristic.value=text.toByteArray()
-            //Log.d(TAG,"$cmdBytes")
-            val success: Boolean = mGatt!!.writeCharacteristic(cmdCharacteristic)
+            Log.d("Central","$text // text")
+            cmdBytes=text.toByteArray()
+            cmdCharacteristic.value=cmdBytes
+            Log.d("BluetoothUtils","$cmdCharacteristic")
+            val success: Boolean = mGatt.writeCharacteristic(cmdCharacteristic)
             // check the result
             if( !success ) {
                 Log.e("Central", "Failed to write command")

@@ -17,21 +17,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.activity_home.view.*
-import kotlinx.android.synthetic.main.payment_list_dialog.*
-import kotlinx.android.synthetic.main.payment_list_dialog.view.*
-import kr.co.bootpay.Bootpay
-import kr.co.bootpay.BootpayAnalytics
-import kr.co.bootpay.enums.Method
-import kr.co.bootpay.enums.PG
-import kr.co.bootpay.enums.UX
-import kr.co.bootpay.model.BootUser
-import org.json.JSONObject
-import java.io.*
-import java.net.HttpURLConnection
-import java.net.URL
 import java.util.ArrayList
+import com.example.karaoke1.MyApplication.Companion.mGatt
 
+@Suppress("DEPRECATION")
 class HomeActivity : AppCompatActivity(){
     private val TAG: String = "Central"
 
@@ -77,12 +66,12 @@ class HomeActivity : AppCompatActivity(){
                 Toast.makeText(MyApplication.getGlobalApplicationContext(), "scanned :  ${result.contents} format: ${result.formatName}", Toast.LENGTH_LONG).show()
                 MAC_ADDR = result.contents.toString()
                 Log.d("QR", "${MAC_ADDR}")
-                val intent = Intent(MyApplication.getGlobalApplicationContext(), ConnectActivity::class.java)
+                //val intent = Intent(MyApplication.getGlobalApplicationContext(), ConnectActivity::class.java)
                 //intent.putExtra("MAC", MAC_ADDR)
                 startScan()
                 //startActivity(intent)
             } else {
-                Toast.makeText(MyApplication.getGlobalApplicationContext(), "Cancelled", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show()
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
@@ -112,6 +101,7 @@ class HomeActivity : AppCompatActivity(){
 
         override fun onScanFailed(errorCode: Int) {
             super.onScanFailed(errorCode)
+            Log.e(TAG, "BLE Scan Failed / $errorCode")
             Toast.makeText(applicationContext, "BLE Scan Failed : $errorCode", Toast.LENGTH_LONG).show()
         }
 
@@ -149,7 +139,7 @@ class HomeActivity : AppCompatActivity(){
                 return
             }else if(status!= BluetoothGatt.GATT_SUCCESS){
                 Log.d(TAG, "bluetoothGatt.GATT_FAILURE / ${status}")
-                //disconnectGattServer()
+                disconnectGattServer()
                 return
             }
             if(newState== BluetoothProfile.STATE_CONNECTED){
@@ -173,7 +163,7 @@ class HomeActivity : AppCompatActivity(){
                 Log.e(TAG, "Device service discovery failed, status: $status")
                 return
             }
-            Log.d(TAG, "Services discovery is successful")
+            Log.d(TAG, "Services discovery is successful $status")
 
             // command characteristic을 GATT 서버로부터 찾음
             if(services!=null) {
@@ -184,22 +174,22 @@ class HomeActivity : AppCompatActivity(){
                         for(descriptor in descriptors){
                             //Log.d(TAG, "${descriptor.uuid.toString()}")
                             if(descriptor.uuid.toString().equals(Constants.CLIENT_CHARACTERISTIC_CONFIG)){
-                                MyApplication.mGatt!!.setCharacteristicNotification(characteristic,true)
+                                mGatt!!.setCharacteristicNotification(characteristic,true)
                                 descriptor.value= BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
                                 gatt.writeDescriptor(descriptor)
                             }
                         }
                     }
                 }
-                Log.d(TAG, "Services get ${MyApplication.mGatt}")
+                Log.d(TAG, "Services get ${mGatt}")
                 is_connected=true
-                btnconnect2.text = "CONNETED"
+                btnconnect2.text = "CONNECTED"
             }
         }
 
         override fun onCharacteristicWrite(gatt: BluetoothGatt?, characteristic: BluetoothGattCharacteristic?, status: Int) {
             super.onCharacteristicWrite(gatt, characteristic, status)
-            if(status== BluetoothGatt.GATT_SUCCESS){
+            if(status==BluetoothGatt.GATT_SUCCESS){
                 Log.d(TAG, "Characteristic written successfully")
             }else{
                 Log.e(TAG, "Characteristic write unsuccessful, status=$status")
@@ -232,19 +222,26 @@ class HomeActivity : AppCompatActivity(){
     fun disconnectGattServer(){
         Log.d(TAG, "Closing Gatt connection")
         //mConnected=false
-        if(MyApplication.mGatt !=null){
-            MyApplication.mGatt!!.disconnect()
-            MyApplication.mGatt!!.close()
-            Log.d("mGatt","${MyApplication.mGatt}")
+        if(mGatt !=null){
+            mGatt!!.disconnect()
+            mGatt!!.close()
+            Log.d("mGatt","${mGatt}")
             is_connected=false
-            btnconnect2.text = "DISCONNETED"
+            MAC_ADDR=""
+            scanDevice=null
+            btnconnect2.text = "DISCONNECTED"
         }
     }
 
-    private fun connectDevice(device: BluetoothDevice?){
+    fun connectDevice(device: BluetoothDevice?){
         //txtState.setText("Connecting to $device?.address")
         Log.d(TAG,"Connecting to $device // $scanDevice")
-        MyApplication.mGatt =device!!.connectGatt(applicationContext, false, gattClientcallback,BluetoothDevice.TRANSPORT_LE)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mGatt =device!!.connectGatt(this, false, gattClientcallback,BluetoothDevice.TRANSPORT_LE)
+        }
+        else {
+            mGatt =device!!.connectGatt(this, false, gattClientcallback)
+        }
     }
 
     private fun requestEnableBLE() {
@@ -280,6 +277,7 @@ class HomeActivity : AppCompatActivity(){
         }, 7000L)
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun stopScan(){
         Log.d("Stop Scan","stopScan")
         ble_adapter?.bluetoothLeScanner?.stopScan(scan_cb)
@@ -288,12 +286,15 @@ class HomeActivity : AppCompatActivity(){
         //txt.text="${scanDevice}"
         if(scanDevice!=null) {
             connectDevice(scanDevice)
-            Log.d("mGatt", "${MyApplication.mGatt}")
+            Log.d("mGatt", "${mGatt}")
         }
         else {
             Log.e(TAG, "Scan Failed. Retry, please")
-            startScan()
+            Toast.makeText(applicationContext, "Scan Failed. Retry, please", Toast.LENGTH_LONG).show()
+            //startScan()
         }
+        scanDevice=null
+        MAC_ADDR=""
     }
 }
 
