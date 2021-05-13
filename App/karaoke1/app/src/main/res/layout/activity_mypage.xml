@@ -23,7 +23,7 @@
                 app:srcCompat="@drawable/mypage" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/txtCount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"

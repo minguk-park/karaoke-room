@@ -64,6 +64,7 @@ class MainActivity : AppCompatActivity() {
                         @Suppress("DEPRECATION")
                         override fun onSuccess(result: MeV2Response) {
                             //JsonExecute().execute("signin","http://175.118.28.138/auth/register",result.nickname,result.kakaoAccount.email)            //서버에 정보 저장
+                            JsonExecute().execute("signin","http://192.168.122.228/auth/register",result.nickname,result.kakaoAccount.email)
                             Toast.makeText(MyApplication.applicationContext(), "Login success", Toast.LENGTH_LONG).show()
                             MyApplication.userEmail=result.kakaoAccount.email
                             val intent=Intent(MyApplication.applicationContext(),HomeActivity::class.java)

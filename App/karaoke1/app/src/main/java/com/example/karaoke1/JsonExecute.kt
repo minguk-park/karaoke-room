@@ -40,6 +40,10 @@ public class JsonExecute: AsyncTask<String, String, String>() {
                     ob.accumulate("email", arr[2])
                     ob.accumulate("point", arr[3])
                 }
+                "count"->{
+                    url= URL(arr[1].toString())
+                    ob.accumulate("email", arr[2])
+                }
             }
             try {
                 //val url = URL("http://175.118.28.138/payment/increase ")        // url 수정

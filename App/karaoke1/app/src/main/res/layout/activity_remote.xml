@@ -16,7 +16,7 @@
         android:textColor="#ffffff"
         app:layout_constraintEnd_toStartOf="@+id/btnPitchUp"
         app:layout_constraintStart_toEndOf="@+id/btnTempoUp"
-        app:layout_constraintTop_toBottomOf="@+id/btnChkResv" />
+        app:layout_constraintTop_toBottomOf="@+id/btnMenu" />
 
     <android.widget.Button
         android:id="@+id/btnVolumeDown"
@@ -39,7 +39,7 @@
         android:text="Pitch▲"
         android:textColor="#ffffff"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnCencelResv" />
+        app:layout_constraintTop_toBottomOf="@+id/btnCancelResv" />
 
     <android.widget.Button
         android:id="@+id/btnPitchDown"
@@ -56,7 +56,7 @@
         android:id="@+id/btnChkResv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="130dp"
         android:background="@drawable/normal_button_shape"
         android:text="예약확인"
@@ -66,11 +66,24 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.widget.Button
-        android:id="@+id/btnCencelResv"
+        android:id="@+id/btnMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="128dp"
+        android:background="@drawable/normal_button_shape"
+        android:text="메뉴"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/btnCancelResv"
+        app:layout_constraintStart_toEndOf="@+id/btnChkResv"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.widget.Button
+        android:id="@+id/btnCancelResv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="130dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginEnd="50dp"
         android:background="@drawable/normal_button_shape"
         android:text="예약취소"
         android:textColor="#ffffff"
@@ -88,7 +101,7 @@
         android:text="Tempo▲"
         android:textColor="#ffffff"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnChkResv" />
+        app:layout_constraintTop_toBottomOf="@+id/btnMenu" />
 
     <android.widget.Button
         android:id="@+id/btnTempoDown"
@@ -102,22 +115,22 @@
         app:layout_constraintTop_toBottomOf="@+id/btnTempoUp" />
 
     <android.widget.Button
-        android:id="@+id/buttonSelect"
+        android:id="@+id/btnPlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/center_button_shape"
-        android:text="선택"
+        android:text="재생"
         android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnup" />
+        app:layout_constraintTop_toBottomOf="@+id/btnUp" />
 
     <android.widget.Button
-        android:id="@+id/btnup"
+        android:id="@+id/btnUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="160dp"
         android:background="@drawable/move_up_button_shape"
         android:text="▲"
         android:textColor="@color/white"
@@ -141,40 +154,54 @@
         app:layout_constraintTop_toBottomOf="@+id/btnVolumeDown" />
 
     <android.widget.Button
-        android:id="@+id/btnPlay"
+        android:id="@+id/btnResvPrior"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/normal_button_shape"
+        android:text="우선예약"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/btnReserve"
+        app:layout_constraintStart_toEndOf="@+id/btnCancel"
+        app:layout_constraintTop_toBottomOf="@+id/btnVolumeDown" />
+
+    <android.widget.Button
+        android:id="@+id/btnReserve"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:layout_marginEnd="30dp"
         android:background="@drawable/normal_button_shape"
-        android:text="시작"
+        android:text="예약"
         android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnVolumeDown" />
 
     <android.widget.Button
-        android:id="@+id/btnright"
+        android:id="@+id/btnRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/right_button_shape"
         android:text="▶"
         android:textColor="@color/white"
-        app:layout_constraintStart_toEndOf="@+id/buttonSelect"
-        app:layout_constraintTop_toBottomOf="@+id/btnup" />
+        app:layout_constraintStart_toEndOf="@+id/btnPlay"
+        app:layout_constraintTop_toBottomOf="@+id/btnUp" />
 
     <android.widget.Button
-        android:id="@+id/btnleft"
+        android:id="@+id/btnLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/left_button_shape"
         android:text="◀"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toStartOf="@+id/buttonSelect"
-        app:layout_constraintTop_toBottomOf="@+id/btnup" />
+        app:layout_constraintEnd_toStartOf="@+id/btnPlay"
+        app:layout_constraintTop_toBottomOf="@+id/btnUp" />
 
     <android.widget.Button
-        android:id="@+id/btndown"
+        android:id="@+id/btnDown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/move_down_button_shape"
@@ -182,7 +209,7 @@
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSelect" />
+        app:layout_constraintTop_toBottomOf="@+id/btnPlay" />
 
     <LinearLayout
         android:layout_width="wrap_content"
