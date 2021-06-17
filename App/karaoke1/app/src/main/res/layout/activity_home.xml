@@ -4,16 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFDE66"
     tools:context=".HomeActivity">
 
     <Button
         android:id="@+id/btnRemote"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="80dp"
         android:layout_marginTop="200dp"
-        android:text="Remote Controller"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="리모컨"
+        android:background="@drawable/round_button_shape"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnmypage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="80dp"
+        android:text="마이페이지"
+        android:background="@drawable/round_button_shape"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
@@ -37,7 +50,7 @@
             android:id="@+id/btnconnect2"
             android:layout_width="275dp"
             android:layout_height="70dp"
-            android:layout_marginStart="-20dp"
+            android:layout_marginStart="-10dp"
             android:background="@drawable/round_button_shape"
             android:text="DISCONNECTED" />
     </LinearLayout>

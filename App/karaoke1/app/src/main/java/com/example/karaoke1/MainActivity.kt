@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         Log.d("start activity", "YES")
         Session.getCurrentSession().addCallback(sessionCallback)
         //val intent=Intent(this,ConnectActivity::class.java)
+        supportActionBar?.title = "Login"
     }
 
     override fun onDestroy() {

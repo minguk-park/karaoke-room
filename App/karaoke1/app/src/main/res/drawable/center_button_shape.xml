@@ -13,13 +13,13 @@
         android:type="radial"
         />-->
     <solid
-        android:color="#D3D3D3"
+        android:color="#EEB31F"
         />
     <size
         android:width="60dp"
         android:height="60dp" />
     <stroke
-        android:color="#ffffff"
         android:width="1dp"
+        android:color="@color/bg_login_button"
         />
 </shape>

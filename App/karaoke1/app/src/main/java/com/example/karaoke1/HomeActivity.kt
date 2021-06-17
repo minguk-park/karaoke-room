@@ -38,6 +38,8 @@ class HomeActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        supportActionBar?.title = "MainPage"
+
         if (!hasPermissions(this, Constants.PERMISSIONS)) {
             requestPermissions(Constants.PERMISSIONS, Constants.REQUEST_ALL_PERMISSION)
         }
@@ -54,6 +56,11 @@ class HomeActivity : AppCompatActivity(){
         }
         btnRemote.setOnClickListener {
             val intent = Intent(this, RemoteActivity::class.java)
+            startActivity(intent)
+        }
+
+        btnmypage.setOnClickListener {
+            val intent = Intent(this, MypageActivity::class.java)
             startActivity(intent)
         }
 

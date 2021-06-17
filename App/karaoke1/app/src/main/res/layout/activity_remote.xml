@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RemoteActivity">
+    tools:context=".RemoteActivity"
+    android:background="#FFDE66">
 
     <android.widget.Button
         android:id="@+id/btnVolumeUp"
@@ -224,7 +225,8 @@
             android:id="@+id/spinner"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginRight="0dp" />
+            android:layout_marginRight="0dp"
+            />
 
         <EditText
             android:id="@+id/editSearch"
