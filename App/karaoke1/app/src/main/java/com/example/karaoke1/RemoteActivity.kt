@@ -43,6 +43,7 @@ class RemoteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_remote)
+        supportActionBar?.title = "리모컨"
 
         val spinAdapter=ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,spinItem)
         spinner.adapter=spinAdapter
@@ -61,8 +62,8 @@ class RemoteActivity : AppCompatActivity() {
             val builder = AlertDialog.Builder(this@RemoteActivity)
             val dialogView = layoutInflater.inflate(R.layout.search_result_dialog, null)
             try {
-                //var jsonresult = JsonExecute().execute("search","http://175.118.28.138/music/search", searchType, editSearch.text.toString()).get()
-                var jsonresult = JsonExecute().execute("search","http://192.168.122.228/music/search", searchType, editSearch.text.toString()).get()
+                var jsonresult = JsonExecute().execute("search","http://175.118.28.138/music/search", searchType, editSearch.text.toString()).get()
+                //var jsonresult = JsonExecute().execute("search","http://192.168.122.228/music/search", searchType, editSearch.text.toString()).get()
                 Log.d("JsonResult","${jsonresult}")
                 var jsonArray:JSONArray=JSONArray(jsonresult)
                 var resultSongs= arrayListOf<ItemSong>()
@@ -255,8 +256,8 @@ class RemoteActivity : AppCompatActivity() {
                 .onDone{message->
                     Log.d("Bootpay", "onDone")
                     Toast.makeText(MyApplication.getGlobalApplicationContext(),"결제가 정상적으로 완료되었습니다.",Toast.LENGTH_LONG)
-                    //JsonExecute().execute("payment","http://175.118.28.138/payment/increase",MyApplication.userEmail,count.toString())
-                    JsonExecute().execute("payment","http://192.168.122.228/payment/increase",MyApplication.userEmail,count.toString())
+                    JsonExecute().execute("payment","http://175.118.28.138/payment/increase",MyApplication.userEmail,count.toString())
+                    //JsonExecute().execute("payment","http://192.168.122.228/payment/increase",MyApplication.userEmail,count.toString())
                 }
                 .onReady { message-> Log.d("Bootpay", "onReady")}
                 .onCancel{ message->

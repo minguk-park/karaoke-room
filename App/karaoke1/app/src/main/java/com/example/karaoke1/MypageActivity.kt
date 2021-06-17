@@ -9,7 +9,8 @@ class MypageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mypage)
-
+        supportActionBar?.title = "마이페이지"
+        
         var count=JsonExecute().execute("count","http://192.168.122.228/payment/invest",MyApplication.userEmail)
         txtCount.text="남은 곡 : $count"
     }
