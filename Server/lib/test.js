@@ -31,9 +31,4 @@ const timeId = setInterval(function(){
     });
 },600000);
 
-// setTimeout(function(){
-//     clearInterval(timeId);
-//     console.log('stop')
-// }, 30000);
-
 module.exports = timeId;

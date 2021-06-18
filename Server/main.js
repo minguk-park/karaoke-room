@@ -7,13 +7,16 @@ const bodyParser = require('body-parser');
 var indexRouter = require('./routes/index');
 var authRouter = require('./routes/auth');
 var paymentRouter = require('./routes/payment');
+var musicRouter = require('./routes/music');
 
 app.use(bodyParser.urlencoded({
   extended: false
 }));  
+
 app.use('/',indexRouter);
 app.use('/auth',authRouter);
 app.use('/payment',paymentRouter);
+app.use('/music',musicRouter);
 
 app.use(function (req, res, next) {
     res.status(404).send('Sorry cant find that!');
