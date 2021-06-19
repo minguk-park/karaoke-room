@@ -6,11 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".MypageActivity"
     android:background="#FFDE66">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="70dp"
+        android:layout_marginBottom="70dp">
 
         <LinearLayout
             android:layout_width="match_parent"

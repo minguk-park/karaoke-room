@@ -18,6 +18,10 @@ import com.example.karaoke1.item.ItemSong
 import kotlinx.android.synthetic.main.activity_remote.*
 import kotlinx.android.synthetic.main.activity_remote.view.*
 import kotlinx.android.synthetic.main.payment_list_dialog.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kr.co.bootpay.Bootpay
 import kr.co.bootpay.BootpayAnalytics
 import kr.co.bootpay.enums.Method
@@ -61,30 +65,40 @@ class RemoteActivity : AppCompatActivity() {
         btnsearch.setOnClickListener {
             val builder = AlertDialog.Builder(this@RemoteActivity)
             val dialogView = layoutInflater.inflate(R.layout.search_result_dialog, null)
+            var resultSongs = arrayListOf<ItemSong>()
+            val intent = Intent(this, PopupResultActivity::class.java)
             try {
-                var jsonresult = JsonExecute().execute("search","http://175.118.28.138/music/search", searchType, editSearch.text.toString()).get()
-                //var jsonresult = JsonExecute().execute("search","http://192.168.122.228/music/search", searchType, editSearch.text.toString()).get()
-                Log.d("JsonResult","${jsonresult}")
-                var jsonArray:JSONArray=JSONArray(jsonresult)
-                var resultSongs= arrayListOf<ItemSong>()
-                Log.d("JsonArray","${jsonArray}")
+                CoroutineScope(Dispatchers.Main).launch {
+                    //var jsonresult = JsonExecute().execute("search","http://175.118.28.138/music/search", searchType, editSearch.text.toString()).get()
+                    //var jsonresult = JsonExecute().execute("search","http://192.168.122.228/music/search", searchType, editSearch.text.toString()).get()
+                    val jsonresult = CoroutineScope(Dispatchers.Default).async {
+                        JsonExecute().getValue("search","http://175.118.28.138/music/search", searchType, editSearch.text.toString())
+                    }.await()
+                    Log.d("JsonResult", "${jsonresult}")
+                    var jsonArray: JSONArray = JSONArray(jsonresult)
+                    //var resultSongs = arrayListOf<ItemSong>()
+                    Log.d("JsonArray", "${jsonArray}")
 
-                for(i in 0 until jsonArray.length()){
-                    var jsonList: JSONArray? =jsonArray.getJSONArray(i)
-                    //jsonObject?.let { it1 -> jsonArrayList.add(it1) }
-                    for(j in 0 until jsonList!!.length()){
-                        var jsonObject:JSONObject=jsonList.getJSONObject(j)
-                        Log.d("jsonObject","${jsonObject}")
-                        var resultsong:ItemSong=ItemSong(jsonObject.getString("name"),jsonObject.getString("singer"),jsonObject.getInt("id"))
-                        resultSongs.add(resultsong)
-                        Log.d("resultsong","${resultsong}")
+                    for (i in 0 until jsonArray.length()) {
+                        var jsonList: JSONArray? = jsonArray.getJSONArray(i)
+                        //jsonObject?.let { it1 -> jsonArrayList.add(it1) }
+                        for (j in 0 until jsonList!!.length()) {
+                            var jsonObject: JSONObject = jsonList.getJSONObject(j)
+                            Log.d("jsonObject", "${jsonObject}")
+                            var resultsong: ItemSong = ItemSong(
+                                jsonObject.getString("name"),
+                                jsonObject.getString("singer"),
+                                jsonObject.getInt("id")
+                            )
+                            resultSongs.add(resultsong)
+                            Log.d("resultsong", "${resultsong}")
+                        }
                     }
+                    intent.putExtra("resultSong", resultSongs)
+                    Log.d("resultSong", "${resultSongs.toString()} ")
+                    //mGatt?.let { it1 -> onClickWrite(it1,"17,") }
+                    startActivityForResult(intent, 1)
                 }
-                var intent= Intent(this,PopupResultActivity::class.java)
-                intent.putExtra("resultSong",resultSongs)
-                Log.d("resultSong","${resultSongs.toString()} ")
-                //mGatt?.let { it1 -> onClickWrite(it1,"17,") }
-                startActivityForResult(intent,1)
             }catch(e:Exception){
                 e.printStackTrace()
             }
@@ -255,9 +269,14 @@ class RemoteActivity : AppCompatActivity() {
                 }
                 .onDone{message->
                     Log.d("Bootpay", "onDone")
-                    Toast.makeText(MyApplication.getGlobalApplicationContext(),"결제가 정상적으로 완료되었습니다.",Toast.LENGTH_LONG)
-                    JsonExecute().execute("payment","http://175.118.28.138/payment/increase",MyApplication.userEmail,count.toString())
+                    //JsonExecute().execute("payment","http://175.118.28.138/payment/increase",MyApplication.userEmail,count.toString())
                     //JsonExecute().execute("payment","http://192.168.122.228/payment/increase",MyApplication.userEmail,count.toString())
+                    CoroutineScope(Dispatchers.Main).launch {
+                        CoroutineScope(Dispatchers.Default).async {
+                            JsonExecute().getValue("payment", "http://175.118.28.138/payment/increase", MyApplication.userEmail, count.toString())
+                        }
+                        Toast.makeText(MyApplication.getGlobalApplicationContext(), "결제가 정상적으로 완료되었습니다.", Toast.LENGTH_LONG)
+                    }
                 }
                 .onReady { message-> Log.d("Bootpay", "onReady")}
                 .onCancel{ message->

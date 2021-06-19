@@ -16,6 +16,11 @@ import com.example.karaoke1.MyApplication.Companion.mGatt
 import com.example.karaoke1.adapter.RvSongAdapter
 import com.example.karaoke1.item.ItemSong
 import kotlinx.android.synthetic.main.activity_popup_result.*
+import kotlinx.android.synthetic.main.activity_remote.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.io.*
 import java.net.HttpURLConnection
@@ -36,10 +41,15 @@ class PopupResultActivity : AppCompatActivity() {
 
         val adapter=RvSongAdapter(this,songList){songinfo->
             mGatt?.let { it1 -> onClickWrite(it1, "17,${songinfo.title}") }
-            //JsonCount().execute("http://175.118.28.138/payment/d",MyApplication.userEmail)
-            //JsonExecute().execute("countdown","http://175.118.28.138/payment/d",MyApplication.userEmail)
-            JsonExecute().execute("countdown","http://192.168.122.228/payment/d",MyApplication.userEmail)
-            finish()
+            CoroutineScope(Dispatchers.Main).launch {
+                //JsonCount().execute("http://175.118.28.138/payment/d",MyApplication.userEmail)
+                //JsonExecute().execute("countdown", "http://175.118.28.138/payment/d", MyApplication.userEmail)
+                //JsonExecute().execute("countdown","http://192.168.122.228/payment/d",MyApplication.userEmail)
+                CoroutineScope(Dispatchers.Default).async {
+                    JsonExecute().getValue("countdown", "http://175.118.28.138/payment/d", MyApplication.userEmail)
+                }
+                finish()
+            }
         }
         resultRv.adapter=adapter
 
