@@ -54,6 +54,7 @@ class MyApplication : Application(){
         private var instance:MyApplication?=null
         var mGatt: BluetoothGatt?=null
         lateinit var userEmail:String
+        lateinit var userImg:String
         fun applicationContext():Context{
             return instance!!.applicationContext
         }

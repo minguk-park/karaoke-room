@@ -4,6 +4,11 @@ import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.MultiTransformation
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_mypage.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +33,7 @@ class MypageActivity : AppCompatActivity() {
 
         Log.d("Mypage", count.toString())
         txtCount.text="남은 곡 : ${count.toString()}"*/
-
+        Glide.with(this).load(MyApplication.userImg).apply(RequestOptions.bitmapTransform(MultiTransformation(CenterCrop(), RoundedCorners(200)))).into(imguser)
         coroutine()
     }
 
@@ -36,7 +41,7 @@ class MypageActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.Main).launch{
 
             val value=CoroutineScope(Dispatchers.Default).async{
-                getValue()
+                JsonExecute().getValue("count","http://175.118.28.138/payment/invest",MyApplication.userEmail)
             }.await()
 
             Log.d("Mypage",MyApplication.userEmail)

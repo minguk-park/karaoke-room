@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RemoteActivity"
-    android:background="#FFDE66">
+    android:background="#FFFFFF"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto">
 
     <android.widget.Button
         android:id="@+id/btnVolumeUp"
@@ -51,46 +52,62 @@
         android:text="Pitch▼"
         android:textColor="#ffffff"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnTempoUp" />
+        app:layout_constraintTop_toBottomOf="@+id/btnTempoUp"
+        />
 
-    <android.widget.Button
+    <info.hoang8f.widget.FButton
         android:id="@+id/btnChkResv"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="130dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/normal_button_shape"
         android:text="예약확인"
         android:textColor="#ffffff"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        fbutton:cornerRadius="5dp"
+        fbutton:fButtonColor="#FFDE66"
+        fbutton:shadowColor="#B8860B"
+        fbutton:shadowEnabled="true"
+        fbutton:shadowHeight="5dp" />
 
-    <android.widget.Button
+    <info.hoang8f.widget.FButton
         android:id="@+id/btnMenu"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/normal_button_shape"
         android:text="메뉴"
         android:textColor="#ffffff"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/btnCancelResv"
         app:layout_constraintStart_toEndOf="@+id/btnChkResv"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        fbutton:cornerRadius="5dp"
+        fbutton:fButtonColor="#FFDE66"
+        fbutton:shadowColor="#B8860B"
+        fbutton:shadowEnabled="true"
+        fbutton:shadowHeight="5dp" />
 
-    <android.widget.Button
+    <info.hoang8f.widget.FButton
         android:id="@+id/btnCancelResv"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="130dp"
-        android:layout_marginEnd="50dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
         android:background="@drawable/normal_button_shape"
         android:text="예약취소"
         android:textColor="#ffffff"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        fbutton:cornerRadius="5dp"
+        fbutton:fButtonColor="#FFDE66"
+        fbutton:shadowColor="#B8860B"
+        fbutton:shadowEnabled="true"
+        fbutton:shadowHeight="5dp" />
 
     <android.widget.Button
         android:id="@+id/btnTempoUp"
@@ -115,50 +132,67 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnTempoUp" />
 
-    <android.widget.Button
+    <info.hoang8f.widget.FButton
         android:id="@+id/btnPlay"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/center_button_shape"
         android:text="재생"
         android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnUp" />
+        app:layout_constraintTop_toBottomOf="@+id/btnUp"
+        fbutton:cornerRadius="5dp"
+        fbutton:fButtonColor="#FFDE66"
+        fbutton:shadowColor="#B8860B"
+        fbutton:shadowEnabled="true"
+        fbutton:shadowHeight="5dp" />
 
-    <android.widget.Button
+
+    <info.hoang8f.widget.FButton
         android:id="@+id/btnUp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="160dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/move_up_button_shape"
         android:text="▲"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnVolumeDown" />
+        app:layout_constraintTop_toBottomOf="@+id/btnResvPrior"
+        fbutton:cornerRadius="5dp"
+        fbutton:fButtonColor="#FFDE66"
+        fbutton:shadowColor="#B8860B"
+        fbutton:shadowEnabled="true"
+        fbutton:shadowHeight="5dp" />
 
-
-    <android.widget.Button
+    <info.hoang8f.widget.FButton
         android:id="@+id/btnCancel"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/normal_button_shape"
         android:text="취소"
         android:textColor="@color/white"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnVolumeDown" />
+        app:layout_constraintTop_toBottomOf="@+id/btnVolumeDown"
+        fbutton:cornerRadius="5dp"
+        fbutton:fButtonColor="#FFDE66"
+        fbutton:shadowColor="#B8860B"
+        fbutton:shadowEnabled="true"
+        fbutton:shadowHeight="5dp" />
 
-    <android.widget.Button
+    <info.hoang8f.widget.FButton
         android:id="@+id/btnResvPrior"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/normal_button_shape"
         android:text="우선예약"
         android:textColor="@color/white"
@@ -166,53 +200,84 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/btnReserve"
         app:layout_constraintStart_toEndOf="@+id/btnCancel"
-        app:layout_constraintTop_toBottomOf="@+id/btnVolumeDown" />
+        app:layout_constraintTop_toBottomOf="@+id/btnVolumeDown"
+        fbutton:cornerRadius="5dp"
+        fbutton:fButtonColor="#FFDE66"
+        fbutton:shadowColor="#B8860B"
+        fbutton:shadowEnabled="true"
+        fbutton:shadowHeight="5dp" />
 
-    <android.widget.Button
+    <info.hoang8f.widget.FButton
         android:id="@+id/btnReserve"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="30dp"
         android:background="@drawable/normal_button_shape"
         android:text="예약"
         android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnVolumeDown" />
+        app:layout_constraintTop_toBottomOf="@+id/btnVolumeDown"
+        fbutton:cornerRadius="5dp"
+        fbutton:fButtonColor="#FFDE66"
+        fbutton:shadowColor="#B8860B"
+        fbutton:shadowEnabled="true"
+        fbutton:shadowHeight="5dp" />
 
-    <android.widget.Button
+    <info.hoang8f.widget.FButton
         android:id="@+id/btnRight"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/right_button_shape"
         android:text="▶"
         android:textColor="@color/white"
         app:layout_constraintStart_toEndOf="@+id/btnPlay"
-        app:layout_constraintTop_toBottomOf="@+id/btnUp" />
+        app:layout_constraintTop_toBottomOf="@+id/btnUp"
+        fbutton:cornerRadius="5dp"
+        fbutton:fButtonColor="#FFDE66"
+        fbutton:shadowColor="#B8860B"
+        fbutton:shadowEnabled="true"
+        fbutton:shadowHeight="5dp" />
 
-    <android.widget.Button
+    <info.hoang8f.widget.FButton
         android:id="@+id/btnLeft"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
         android:background="@drawable/left_button_shape"
         android:text="◀"
         android:textColor="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/btnPlay"
-        app:layout_constraintTop_toBottomOf="@+id/btnUp" />
+        app:layout_constraintTop_toBottomOf="@+id/btnUp"
+        fbutton:cornerRadius="5dp"
+        fbutton:fButtonColor="#FFDE66"
+        fbutton:shadowColor="#B8860B"
+        fbutton:shadowEnabled="true"
+        fbutton:shadowHeight="5dp" />
 
-    <android.widget.Button
+    <info.hoang8f.widget.FButton
         android:id="@+id/btnDown"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/move_down_button_shape"
         android:text="▼"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnPlay" />
+        app:layout_constraintTop_toBottomOf="@+id/btnPlay"
+        fbutton:cornerRadius="5dp"
+        fbutton:fButtonColor="#FFDE66"
+        fbutton:shadowColor="#B8860B"
+        fbutton:shadowEnabled="true"
+        fbutton:shadowHeight="5dp" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
@@ -225,8 +290,7 @@
             android:id="@+id/spinner"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginRight="0dp"
-            />
+            android:layout_marginRight="0dp" />
 
         <EditText
             android:id="@+id/editSearch"
@@ -239,6 +303,7 @@
             android:id="@+id/btnsearch"
             android:layout_width="75dp"
             android:layout_height="50dp"
+            android:background="@drawable/normal_button_shape"
             android:text="검색" />
     </LinearLayout>
 

@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import com.dd.processbutton.iml.ActionProcessButton
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.activity_home.*
 import java.util.ArrayList
@@ -33,7 +34,6 @@ class HomeActivity : AppCompatActivity(){
     private var scan_results: HashMap<String, BluetoothDevice>? =HashMap()
     private var scanDevice: BluetoothDevice?=null
     private var ble_scanner: BluetoothLeScanner? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -48,11 +48,16 @@ class HomeActivity : AppCompatActivity(){
         //set ble adapter
         ble_adapter = ble_manager.adapter
 
-        btnconnect2.setOnClickListener {
-            val integrator = IntentIntegrator(this)
-            integrator.setBeepEnabled(true)
-            integrator.captureActivity = MyBarcodeReaderActivity::class.java
-            integrator.initiateScan()
+
+        btnconnect.setOnClickListener {
+            if(!is_connected) {
+                val integrator = IntentIntegrator(this)
+                integrator.setBeepEnabled(true)
+                integrator.captureActivity = MyBarcodeReaderActivity::class.java
+                integrator.initiateScan()
+            }else{
+
+            }
         }
         btnRemote.setOnClickListener {
             val intent = Intent(this, RemoteActivity::class.java)
@@ -63,7 +68,6 @@ class HomeActivity : AppCompatActivity(){
             val intent = Intent(this, MypageActivity::class.java)
             startActivity(intent)
         }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -75,6 +79,8 @@ class HomeActivity : AppCompatActivity(){
                 Log.d("QR", "${MAC_ADDR}")
                 //val intent = Intent(MyApplication.getGlobalApplicationContext(), ConnectActivity::class.java)
                 //intent.putExtra("MAC", MAC_ADDR)
+                btnconnect.progress=1
+                btnconnect.setMode(ActionProcessButton.Mode.ENDLESS)
                 startScan()
                 //startActivity(intent)
             } else {
@@ -190,7 +196,9 @@ class HomeActivity : AppCompatActivity(){
                 }
                 Log.d(TAG, "Services get ${mGatt}")
                 is_connected=true
-                btnconnect2.text = "CONNECTED"
+                btnconnect.progress=100
+                txtble.text="블루투스 연결 완료"
+                imgble.setImageResource(R.drawable.bluetooth_connected)
             }
         }
 
@@ -235,8 +243,8 @@ class HomeActivity : AppCompatActivity(){
             Log.d("mGatt","${mGatt}")
             is_connected=false
             MAC_ADDR=""
+            scan_results =HashMap()
             scanDevice=null
-            btnconnect2.text = "DISCONNECTED"
         }
     }
 
@@ -297,6 +305,7 @@ class HomeActivity : AppCompatActivity(){
         }
         else {
             Log.e(TAG, "Scan Failed. Retry, please")
+            btnconnect.progress=-1
             Toast.makeText(applicationContext, "Scan Failed. Retry, please", Toast.LENGTH_LONG).show()
             //startScan()
         }

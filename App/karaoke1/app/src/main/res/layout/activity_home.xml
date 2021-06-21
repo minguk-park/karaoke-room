@@ -1,57 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFDE66"
+    android:background="#FFFFFF"
     tools:context=".HomeActivity">
 
-    <Button
+    <info.hoang8f.widget.FButton
         android:id="@+id/btnRemote"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="80dp"
         android:layout_marginTop="200dp"
         android:text="리모컨"
-        android:background="@drawable/round_button_shape"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        fbutton:cornerRadius="5dp"
+        fbutton:fButtonColor="#FFDE66"
+        fbutton:shadowColor="#B8860B"
+        fbutton:shadowEnabled="true"
+        fbutton:shadowHeight="5dp" />
 
-    <Button
+    <info.hoang8f.widget.FButton
         android:id="@+id/btnmypage"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="200dp"
         android:layout_marginEnd="80dp"
         android:text="마이페이지"
-        android:background="@drawable/round_button_shape"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        fbutton:cornerRadius="5dp"
+        fbutton:fButtonColor="#FFDE66"
+        fbutton:shadowColor="#B8860B"
+        fbutton:shadowEnabled="true"
+        fbutton:shadowHeight="5dp" />
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="350dp"
-        android:layout_height="75dp"
+        android:layout_height="100dp"
         android:layout_marginTop="120dp"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnRemote"
         tools:ignore="MissingConstraints">
+        
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:contentDescription="TODO"
-            android:src="@drawable/ic_baseline_bluetooth_24" />
+            <ImageView
+                android:id="@+id/imgble"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/bluetooth_disconnected"
+                android:gravity="center">
 
-        <android.widget.Button
-            android:id="@+id/btnconnect2"
-            android:layout_width="275dp"
+            </ImageView>
+            <TextView
+                android:id="@+id/txtble"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="블루투스를 연결해주세요."
+                android:gravity="center"
+                android:textSize="16sp">
+            </TextView>
+            
+        </LinearLayout>
+
+        <com.dd.processbutton.iml.ActionProcessButton
+            android:id="@+id/btnconnect"
+            custom:pb_colorComplete="@color/green_complete"
+            custom:pb_colorNormal="#FFDE66"
+            custom:pb_colorPressed="#B8860B"
+            custom:pb_colorProgress="@color/purple_progress"
+            custom:pb_textComplete="Connected"
+            custom:pb_textProgress="Connecting..."
+            custom:pb_textError="Connect Fail"
+            custom:pb_colorError="@color/red_error"
+            custom:pb_cornerRadius="5dp"
+            android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:layout_marginStart="-10dp"
-            android:background="@drawable/round_button_shape"
-            android:text="DISCONNECTED" />
+
+            android:text="DISCONNECTED"
+            android:textColor="@android:color/white"/>
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

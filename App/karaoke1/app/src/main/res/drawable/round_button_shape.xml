@@ -12,8 +12,10 @@
         android:type="linear"
         />-->
     <solid
-        android:color="#EEB31F"
+        android:color="#FFDE66"
         />
+        <!--android:color="#EEB31F"-->
+
     <size
         android:width="60dp"
         android:height="60dp" />

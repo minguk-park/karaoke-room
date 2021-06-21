@@ -11,6 +11,7 @@ class MyBarcodeReaderActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_barcode_reader)
+        supportActionBar?.title="QR Tag"
         capture = CaptureManager(this,barcodeScanner)
         capture.initializeFromIntent(intent, savedInstanceState)
         capture.decode()

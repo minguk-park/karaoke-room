@@ -13,11 +13,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:text="QR 코드 스캐너"/>
+        android:text="반주기 QR를 태그해주세요."/>
 
     <com.journeyapps.barcodescanner.DecoratedBarcodeView
         android:id="@+id/barcodeScanner"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="500dp"
+        android:layout_height="500dp"
         app:zxing_scanner_layout="@layout/custom_barcode_scanner"/>
 </LinearLayout>
