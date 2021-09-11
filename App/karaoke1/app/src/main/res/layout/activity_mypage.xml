@@ -7,18 +7,21 @@
     android:layout_height="match_parent"
     tools:context=".MypageActivity"
     android:background="#FFFFFF">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:layout_marginTop="70dp"
-        android:layout_marginBottom="70dp">
+        android:layout_marginBottom="70dp"
+        android:background="#FFDE66"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:orientation="vertical"
-            android:background="#FFDE66">
+            android:background="#FFDE66"
+            android:orientation="vertical">
+
             <ImageView
                 android:id="@+id/imguser"
                 android:layout_width="120dp"
@@ -31,58 +34,17 @@
                 android:id="@+id/txtCount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
                 android:gravity="center"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="60dp"
-                android:textSize="20dp"
-                android:text="남은 곡 : 0" />
+                android:text="남은 곡 : 0"
+                android:textSize="20dp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginTop="70dp">
-
-            <info.hoang8f.widget.FButton
-                android:id="@+id/button"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="결제 내역"
-                android:padding="20dp"
-                android:layout_marginBottom="30dp"
-                fbutton:fButtonColor="#FFDE66"
-                fbutton:cornerRadius="5dp"
-                fbutton:shadowColor="#DAA520"
-                fbutton:shadowEnabled="true"
-                fbutton:shadowHeight="5dp"/>
-
-            <info.hoang8f.widget.FButton
-                android:id="@+id/button2"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="로그아웃"
-                android:padding="20dp"
-                android:layout_marginBottom="30dp"
-                fbutton:fButtonColor="#FFDE66"
-                fbutton:cornerRadius="5dp"
-                fbutton:shadowColor="#DAA520"
-                fbutton:shadowEnabled="true"
-                fbutton:shadowHeight="5dp"/>
-
-            <info.hoang8f.widget.FButton
-                android:id="@+id/button3"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="회원탈퇴"
-                android:padding="20dp"
-                fbutton:fButtonColor="#FFDE66"
-                fbutton:cornerRadius="5dp"
-                fbutton:shadowColor="#DAA520"
-                fbutton:shadowEnabled="true"
-                fbutton:shadowHeight="5dp"/>
-
-        </LinearLayout>
+            android:layout_marginTop="70dp"
+            android:orientation="vertical" />
 
     </LinearLayout>
 
